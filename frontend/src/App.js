@@ -23,6 +23,7 @@ function App() {
             {!token && token!=="" &&token!== undefined?  
             <>
             <Login setToken={setToken} />
+            <Signup setToken={setToken} />
             </>
             :(
               <>

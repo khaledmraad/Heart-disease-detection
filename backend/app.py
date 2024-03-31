@@ -37,7 +37,7 @@ def create_token():
     test=db_collection.count_documents({"user_email":email,"password":password})==1
 
     if not test:
-        return jsonify({"error ":"email or password dont exist"}),401
+        return jsonify({"error ":"email or password are wrong"}),401
     
     return jsonify({
         "email":email,
@@ -50,18 +50,20 @@ def signup():
 
     email=request.json.get("email",None)
     password=request.json.get("password",None)
-    
-    test=db_collection.find_one({"user_email":email})
+
+    test=db_collection.count_documents({"user_email":email})==1
 
     if test:
         return jsonify({"error ":"email already exist"}),401
     
     newUser=db_collection.insert_one({"user_email":email,"password":password})
+    
+    access_token=create_access_token(identity=email)
 
     return jsonify({
-        "id":str(newUser.inserted_id),
-        "email":email
-    })
+        "email":email,
+        "access_token":access_token
+    }),200
 
 
 @api.after_request
@@ -95,10 +97,10 @@ def my_profile(getemail):
     if not getemail:
         return jsonify({"error": "Unauthorized Access"}), 401
        
-    test=db_collection.find_one({"user_email":getemail})
+    test=db_collection.count_documents({"user_email":getemail})==1
 
     if not test:
-        return {"error ":"email dont exist"},400
+        return jsonify({"error ":"email dont exist"}),400
     
     return jsonify({
         "id": "kqsldkcdqdsc",
