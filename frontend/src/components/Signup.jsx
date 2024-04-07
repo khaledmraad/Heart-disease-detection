@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Signup(props) {
       
     const [loginForm, setloginForm] = useState({
+      userName:"",
       email: "",
       password: ""
     })
@@ -17,7 +18,8 @@ function Signup(props) {
             url:"http://localhost:5000/signup",
             data:{
               email: loginForm.email,
-              password: loginForm.password
+              password: loginForm.password,
+              userName: loginForm.userName
              }
         })
         .then((response) => {
@@ -39,6 +41,7 @@ function Signup(props) {
         })
  
         setloginForm(({
+            userName:"",
             email: "",
             password: ""}))
  
@@ -65,6 +68,11 @@ function Signup(props) {
                   </div>
   
                   <div className="form-outline mb-4">
+                    <input type="email" value={loginForm.userName} onChange={handleChange} text={loginForm.userName} name="userName" id="form3Example6" className="form-control form-control-lg" placeholder="Enter a user name" />
+                    <label className="form-label" for="form3Example3">User Name</label>
+                  </div>
+
+                  <div className="form-outline mb-4">
                     <input type="email" value={loginForm.email} onChange={handleChange} text={loginForm.email} name="email" id="form3Example6" className="form-control form-control-lg" placeholder="Enter a valid email address" />
                     <label className="form-label" for="form3Example3">Email address</label>
                   </div>
@@ -78,7 +86,7 @@ function Signup(props) {
   
                   <div className="text-center text-lg-start mt-4 pt-2">
                     <button type="button" className="btn btn-primary btn-lg" onClick={btnSignUp} >SignUp</button>
-                    <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/register" className="link-danger">Register</a></p>
+                    <p className="small fw-bold mt-2 pt-1 mb-0">Already have an account <a href="/login" className="link-danger">Login</a></p>
                   </div>
   
                 </form>

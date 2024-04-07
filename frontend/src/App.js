@@ -7,6 +7,7 @@ import Login from './components/Login'
 import Header from './components/Header'
 import Profile from './components/Profile'
 import Signup from './components/Signup'
+import Home from './components/Home';
 import useToken from './components/useToken'
  
 function App() {
@@ -22,8 +23,13 @@ function App() {
             <Header token={removeToken}/>
             {!token && token!=="" &&token!== undefined?  
             <>
-            <Login setToken={setToken} />
-            <Signup setToken={setToken} />
+            <Routes>
+              <Route exact path="/" element={<Home/>}>
+                  </Route>
+                  <Route exact path="/login" element={<Login setToken={setToken}/>}>
+                  </Route>
+                  <Route exact path="/register" element={<Signup setToken={setToken}/>}></Route>
+                </Routes>
             </>
             :(
               <>

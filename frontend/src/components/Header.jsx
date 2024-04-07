@@ -1,6 +1,8 @@
 import React, { } from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import { Link } from 'react-router-dom';
+
  
 function Header(props) {
  
@@ -31,9 +33,17 @@ function Header(props) {
           <div className="container-fluid">
             
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              
+            <Link to="/">
+                    <button>
+                      Home
+                    </button>
+                  </Link>
                 {!logged?
-                    <button className="btn btn-outline-success" type="submit">Login</button>
+                    <Link to="/login">
+                    <button>
+                      Login
+                    </button>
+                  </Link>
                 :<button className="btn btn-outline-danger" type="submit" onClick={logMeOut}>Logout</button>}
             </div>
           </div>

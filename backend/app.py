@@ -4,6 +4,8 @@ from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity,unse
 from flask_cors import CORS
 from pymongo import MongoClient
 import json
+import pickle
+import numpy as np
 
 
 
@@ -13,13 +15,16 @@ api.config['SECRET_KEY']='thaKey'
 
 jwt=JWTManager(api)
 
-cors = CORS(api, resources={r"/*": {"origins": "http://localhost:3000"}})
+# cors = CORS(api, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(api)
 
 client=MongoClient("mongodb://localhost:27017/")
 
 client_db = client["hospital"]
 
 db_collection = client_db["users"]
+
+model=pickle.load(open("model.pkl","rb"))
 
 
 @api.route("/")
@@ -48,6 +53,7 @@ def create_token():
 @api.route("/signup",methods=['POST'])
 def signup():
 
+    userName=request.json.get("userName",None)
     email=request.json.get("email",None)
     password=request.json.get("password",None)
 
@@ -56,7 +62,7 @@ def signup():
     if test:
         return jsonify({"error ":"email already exist"}),401
     
-    newUser=db_collection.insert_one({"user_email":email,"password":password})
+    newUser=db_collection.insert_one({"user_name":userName,"user_email":email,"password":password})
     
     access_token=create_access_token(identity=email)
 
@@ -108,5 +114,19 @@ def my_profile(getemail):
         "name":"theprimeagen"
     })
   
+@api.route("/predict", methods=['POST'])
+def predict():
+    # print(request.json)
+    try:
+        form_data = request.json
+
+        feature = np.array([float(form_data[key]) for key in form_data]).reshape(1, -1)
+
+        prediction = model.predict(feature)
+
+        return jsonify({"prediction": str(prediction[0])}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 
