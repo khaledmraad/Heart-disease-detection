@@ -15,17 +15,16 @@ function App() {
     const { token, removeToken, setToken } = useToken();
      
     return (
-        <div className="vh-100 gradient-custom">
-        <div className="container">
-          <h1 className="page-header text-center">welcome</h1>
              
           <BrowserRouter>
             <Header token={removeToken}/>
-            {!token && token!=="" &&token!== undefined?  
-            <>
             <Routes>
               <Route exact path="/" element={<Home/>}>
                   </Route>
+                  </Routes>
+            {!token && token!=="" &&token!== undefined?  
+            <>
+            <Routes>
                   <Route exact path="/login" element={<Login setToken={setToken}/>}>
                   </Route>
                   <Route exact path="/register" element={<Signup setToken={setToken}/>}></Route>
@@ -39,8 +38,6 @@ function App() {
               </>
             )}
           </BrowserRouter>
-        </div>
-        </div>
     );
 }
      

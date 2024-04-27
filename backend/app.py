@@ -2,7 +2,8 @@ from flask import Flask,request,jsonify
 from datetime import datetime,timedelta,timezone
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity,unset_jwt_cookies,jwt_required,JWTManager
 from flask_cors import CORS
-from pymongo import MongoClient
+from pymongo import MongoClient;
+import pymongo
 import json
 import pickle
 import numpy as np
@@ -18,7 +19,7 @@ jwt=JWTManager(api)
 # cors = CORS(api, resources={r"/*": {"origins": "http://localhost:3000"}})
 CORS(api)
 
-client=MongoClient("mongodb://localhost:27017/")
+client=pymongo.MongoClient("mongodb://127.0.1:27017/")
 
 client_db = client["hospital"]
 
